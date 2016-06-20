@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<head>
+ <script type="text/javascript" src="js/jquery.js"></script>
+ <script type="text/javascript" src="js/index.js"></script>
+ <script type="text/javascript" charset="utf-8" src="cordova.js"></script>
+ <script type="text/javascript">
+
+document.addEventListener("backbutton", onBackKeyDown, false);
+   
+	
+function onBackKeyDown() {
+	//alert("backkey!!");
+	if(document.getElementById("popup").checked == true){
+		document.getElementById("popup").checked = false;
+		}else{
+			navigator.app.exitApp();
+			}
+    
+}
+
+ $(function() {
+  $("li").on("click",function() {
+	document.getElementById("menu_checkbox").checked = false;
+	document.getElementById("popup").checked = false;
+	  });
+	});
+ 
+var show_recept_start = 0;
+var show_recept = 3;	
+
+ function getDateFromDb(action){
+	 //alert('haal gegevens op');
+	 
+	 var url="http://online-kookboek.nl/apk/json.php";
+ 	$.getJSON(url,function(result){
+		
+		//console.log(result);
+		if(action == "refresh"){
+			$('html,body').scrollTop(0);
+			$( "#listview label" ).remove();
+			show_recept_start = 0;
+			show_recept = 3;	
+			}
+		
+		$.each(result, function(i, field){
+			if (i <= show_recept && i >= show_recept_start) {
+				//alert(i);
+			var id=field.id;
+			var receptNaam=field.receptNaam;
+ 			var receptSub=field.receptSub;
+			var inzender=field.inzender;
+			var img = '';
+			
+				
+				var img = "<img src='http://online-kookboek.nl/recepten/"+id+"_main_thumb.jpg'>";
+				$("#listview").append("<label id='id"+id+"' for='popup' onClick='popup_content(this.id)'><li>"+img+"<h1>"+receptNaam+"</h1><h4>"+receptSub+" </h4>"+inzender+"<br><br></li></label>");
+			
+			}
+ 			});
+ 		});
+	 }
+ 	
+ $(document).ready(function(){
+	getDateFromDb();
+ 	});
+	
+//vult de popup met de content van het aangeklikte recept	
+function popup_content(id){
+	var searchkey = id.replace("id", "");
+	//alert(id);
+	$("#recept_content").empty()
+	
+	//alert('haal gegevens op');
+	 var url="http://online-kookboek.nl/apk/json.php";
+ 	$.getJSON(url,function(result){
+		//console.log(result);
+		//$("#listview").empty()
+		
+		$.each(result, function(i, field){
+				//alert(i);
+			var id=field.id;
+			var receptNaam=field.receptNaam;
+ 			var receptSub=field.receptSub;
+			var inzender=field.inzender;
+			var ingredienten=field.ingredienten;
+			var bereiding=field.bereiding;
+			var img = '';
+			
+			
+			if(id.indexOf(searchkey) != -1){
+				var img = "<img src='http://online-kookboek.nl/recepten/"+id+"_main_thumb.jpg'>";
+				var kop = "<h1>"+receptNaam+"</h1><h4>"+receptSub+" </h4>"+inzender+"<br><br>	";
+				var ingredienten = "<h3>Ingredienten</h3>"+ingredienten;
+				var bereiding = "<h3>Bereiding</h3>"+bereiding;
+				$("#recept_content").append(img+"<div>"+kop+ingredienten+bereiding+"</div>");
+				}
+			
+ 			});
+ 		});
+			
+	}
+	
+$(window).scroll(function() {   
+   if($(window).scrollTop() == $(document).height() - $(window).height()) {
+	  show_recept_start = show_recept_start + 4;
+	  show_recept = show_recept_start + 3;
+	  
+	  getDateFromDb();
+   }
+});
+ 
+value = "je moeder";
+ // To store a value
+window.localStorage.setItem('key', value);
+
+// To retrieve a value
+value = window.localStorage.getItem('key');
+
+// To delete a storage
+//window.localStorage.removeItem('key');
+
+document.addEventListener("deviceready", onDeviceReady, false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        navigator.splashscreen.hide();
+    }
+	
+
+	
+ </script>
+ <link href="css/style.css" rel="stylesheet">
+ <link href="css/recept_popup.css" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+<body>
+
+<div id="header">
+	
+    <input type="checkbox" id="menu_checkbox">
+    
+    <label for="menu_checkbox" id="menu_knop">&#9776;</label>
+    <h1 id="naam">Online-kookboek.nl</h1>
+    <li id="overlay"></li>
+    
+    <ul id="menu">
+    
+    <li><a href="javascript:void(0)" onClick="getDateFromDb('refresh')">home</a></li>
+	<li><a href="form.html">invoeren</a></li>
+    <li><a href="update.html">update</a></li>
+	</ul>
+
+</div>
+    
+
+<wrapper>
+	
+    <h1 class="title">Recepten</h1>
+    
+    <ul class="list" id="listview">
+    <input type="checkbox" name="popup" id="popup">
+    
+    <div id="recept_popup">
+        <div id="recept_content"></div>
+    </div>
+    
+    </ul>
+    <div id="pulldown">pull down to load more </div>
+    <img id="loading" src="img/loading.gif">
+</wrapper>
+</body>
+</html>

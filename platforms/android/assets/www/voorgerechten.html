@@ -1,0 +1,58 @@
+<html>
+<head>
+ <script type="text/javascript" src="js/jquery.js"></script>
+ <script type="text/javascript">
+ 
+
+ function getDateFromDb(){
+	 //alert('haal gegevens op');
+	 var url="http://rubenkoops.nl/online-kookboek-apk/json.php";
+ 	$.getJSON(url,function(result){
+		console.log(result);
+		$("#listview").empty()
+		
+		$.each(result, function(i, field){
+			var id=field.id;
+			var receptNaam=field.receptNaam;
+ 			var receptSub=field.receptSub;
+			var categorie=field.categorie;
+			var inzender=field.inzender;
+			var img = '';
+			
+			var searchkey = "voorgerecht";
+			
+			if(categorie.indexOf(searchkey) != -1){
+				
+				var img = "<img src='http://online-kookboek.nl/recepten/"+id+"_main.jpg'>";
+					
+				$("#listview").append("<a href='recept.html?"+id+"'><li>"+img+"<h1>"+receptNaam+"</h1><h4>"+receptSub+" </h4>"+inzender+"<br><br></li></a>");
+			}
+			
+ 			});
+ 		});
+	 }
+ 	
+ $(document).ready(function(){
+	getDateFromDb();
+ 	});
+ 
+value = "je moeder";
+ // To store a value
+window.localStorage.setItem('key', value);
+
+// To retrieve a value
+value = window.localStorage.getItem('key');
+
+// To delete a storage
+//window.localStorage.removeItem('key');
+ </script>
+ <link href="css/style.css" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+<body>
+<wrapper>
+    <h1 class="title">Recepten</h1>
+    <ul class="list" id="listview"></ul>
+</wrapper>
+</body>
+</html>

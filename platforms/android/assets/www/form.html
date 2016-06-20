@@ -1,0 +1,86 @@
+<html>
+<head>
+ <script type="text/javascript" src="js/jquery.js"></script>
+ <script type="text/javascript">
+ $(document).ready(function()
+ {
+ $("#insert").click(function(){
+	
+var email=$("#email").val();
+ var firstname=$("#firstname").val();
+ var lastname=$("#lastname").val();
+ var password=$("#password").val();
+ var role=$("#role").val();
+ 
+ var dataString="email="+email+"&firstname="+firstname+"&lastname="+lastname+"&password="+password+"&role="+role+"&insert=";
+ if($.trim(firstname).length>0 & $.trim(lastname).length>0 & $.trim(email).length>0){
+	 $.ajax({
+		type: "POST",
+		url:"http://rubenkoops.nl/online-kookboek-apk/insert.php",
+		data: dataString,
+		crossDomain: true,
+		cache: false,
+		beforeSend: function(){ $("#insert").val('Connecting...');},
+		success: function(data){
+			if(data=="ok"){
+				alert("inserted");
+				$("#insert").val('submit');
+				}
+				else{
+					alert(data);
+					}
+				}
+			});
+		}return false;
+	});
+ });
+ 
+ //alert(window.localStorage.getItem('key'));
+ </script>
+ <link href="css/style.css" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+<wrapper>
+    <div class="bar bar-header bar-positive" style="margin-bottom:80px;">
+    <h1 class="title">Insert Database</h1>
+     </div>
+     
+     <br/><br/>
+     
+     <div class="list">
+     <form method="post" enctype="multipart/form-data" action="">
+     <div class="item">
+     <label>email</label>
+     <input type="email" id="email" value="" required/>
+     </div>
+     
+     <div class="item">
+     <label>firstname</label>
+     <input type="text" id="firstname" value="" required/>
+     </div>
+     
+     <div class="item">
+     <label>lastname</label>
+     <input type="text" id="lastname" value="" required/>
+     </div>
+     
+     <div class="item">
+     <label>password</label>
+     <input type="password" id="password" value="" required/>
+     </div>
+     
+     <div class="item">
+     <label>role</label>
+     <input type="text" id="role" value="" required/>
+     </div>
+     
+     <div class="item">
+     <input type="submit" id="insert" class="button" value="Insert"/>
+     
+     </div>
+     </form>
+     </div>
+</wrapper>
+</body>
+</html>

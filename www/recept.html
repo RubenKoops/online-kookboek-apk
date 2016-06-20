@@ -1,0 +1,109 @@
+<html>
+<head>
+ <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript">
+document.addEventListener('deviceready', function(){
+
+  navigator.splashscreen.show();
+
+  setTimeout(function(){
+    navigator.splashscreen.hide();
+  },1000);
+
+}, false);
+
+ $(function() {
+  $("li").on("click",function() {
+	document.getElementById("menu_checkbox").checked = false;
+	  });
+	});
+	
+document.addEventListener("backbutton", onBackKeyDown, false);
+
+function onBackKeyDown() {
+    document.getElementById("content").src="home.html";
+}
+
+ </script>
+ <script type="text/javascript">
+ 
+ var searchid = window.location.search;
+ searchid = searchid.substring(1);
+
+
+ function getDateFromDb(){
+	 //alert('haal gegevens op');
+	 var url="http://online-kookboek.nl/apk/json.php";
+ 	$.getJSON(url,function(result){
+		console.log(result);
+		$("#listview").empty()
+		
+		$.each(result, function(i, field){
+			var id=field.id;
+			var receptNaam=field.receptNaam;
+ 			var receptSub=field.receptSub;
+			var inzender=field.inzender;
+			var ingredienten=field.ingredienten;
+			var bereiding=field.bereiding;
+			var img = '';
+			
+			var searchkey = searchid;
+			
+			if(id.indexOf(searchkey) != -1){
+				
+				var img = "<img src='http://online-kookboek.nl/recepten/"+id+"_main_thumb.jpg'>";
+				var kop = "<h1>"+receptNaam+"</h1><h4>"+receptSub+" </h4>"+inzender+"<br><br>	";
+				var ingredienten = "<h3>Ingredienten</h3>"+ingredienten;
+				var bereiding = "<h3>Bereiding</h3>"+bereiding;
+				document.getElementById("banner").style.backgroundImage=id+"_main.jpg";
+				$("#blur_img").css("background-image", "url(http://online-kookboek.nl/recepten/"+id+"_main.jpg)");
+				$("#banner").append(img);
+				$("#recept_info").append(kop+ingredienten+bereiding);
+			}
+			
+ 			});
+ 		});
+	 }
+ 	
+ $(document).ready(function(){
+	getDateFromDb();
+ 	});
+ 
+value = "je moeder";
+ // To store a value
+window.localStorage.setItem('key', value);
+
+// To retrieve a value
+value = window.localStorage.getItem('key');
+
+// To delete a storage
+//window.localStorage.removeItem('key');
+ </script>
+ <link href="css/style.css" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+<body>
+
+<div id="header">
+	
+    <input type="checkbox" id="menu_checkbox">
+    <label for="menu_checkbox" id="menu_knop">&#9776;</label>
+    <h1 id="naam">Online-kookboek.nl</h1>
+    <li id="overlay"></li>
+    
+    <ul id="menu">
+    <li><a href="index.html">home</a></li>
+	<li><a href="form.html">invoeren</a></li>
+    <li><a href="update.html">update</a></li>
+	</ul>
+
+</div>
+
+<div id="banner">
+<div id="blur_img"></div>
+</div>
+<wrapper style=" padding-top:0;">
+    <div class="list" id="recept_info"></div>
+</wrapper>
+</body>
+</html>

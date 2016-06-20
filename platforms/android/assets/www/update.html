@@ -1,0 +1,56 @@
+<html>
+<head>
+ <script type="text/javascript" src="js/jquery.js"></script>
+  <script type="text/javascript">
+document.addEventListener('deviceready', function(){
+
+  navigator.splashscreen.show();
+
+  setTimeout(function(){
+    navigator.splashscreen.hide();
+  },1000);
+
+}, false);
+
+ $(function() {
+  $("li").on("click",function() {
+	document.getElementById("menu_checkbox").checked = false;
+	  });
+	});
+	
+document.addEventListener("backbutton", onBackKeyDown, false);
+
+function onBackKeyDown() {
+    document.getElementById("content").src="home.html";
+}
+
+ </script>
+
+ <link href="css/style.css" rel="stylesheet">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ </head>
+<body>
+
+<div id="header">
+	
+    <input type="checkbox" id="menu_checkbox">
+    <label for="menu_checkbox" id="menu_knop">&#9776;</label>
+    <h1 id="naam">Online-kookboek.nl</h1>
+    <li id="overlay"></li>
+    
+    <ul id="menu">
+    <li><a href="index.html">home</a></li>
+	<li><a href="form.html">invoeren</a></li>
+    <li><a href="update.html">update</a></li>
+	</ul>
+
+</div>
+
+<div id="banner">
+<div id="blur_img"></div>
+</div>
+<wrapper style=" padding-top:0;">
+<iframe src="http://online-kookboek.nl/apk" style="width:100%; height:500px; border:none;"></iframe>
+</wrapper>
+</body>
+</html>

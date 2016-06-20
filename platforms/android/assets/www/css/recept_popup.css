@@ -1,0 +1,49 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#backbutton{
+	}
+#popup{
+	display:none;
+	}
+#recept_popup{
+	top:0;
+	width:100%;height:100%;
+	background-color:#0000;
+	position:fixed;
+	z-index:80;
+	transform:translateX(300px);
+	transition: all 0.2s ease-in-out;
+	opacity:0; visibility:visible;
+	overflow:auto;
+	}
+	
+
+
+#popup:checked + #recept_popup{
+	background-color:#FFFFFF;
+	transform:translateX(-30px);
+	transition: all 0.2s ease-in-out;
+	opacity:1; visibility:visible;
+	}
+	
+#recept_content{
+	padding-top:45px;
+	}
+
+#recept_content div{
+	padding:30px;
+	}
+	
+@media screen and (min-width: 800px) {
+	#recept_popup{
+		margin-top:0;
+		}
+	#popup:checked + #recept_popup{
+		transform:translateX(-50px);
+		}
+	#recept_content{
+		padding-top:0;
+		}
+		}
+	
